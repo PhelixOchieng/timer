@@ -306,16 +306,28 @@ class Dial extends HookWidget {
   }
 
   List<BoxShadow> _bottomRightShadows(ThemeData theme) {
-    final color = theme.isLightMode
-        ? theme.colorScheme.primary.withOpacity(0.1)
-        : theme.colorScheme.primary.darken(0.3).withOpacity(0.1);
+    // final color = theme.isLightMode
+    //     ? theme.colorScheme.primary.darken(0.05)
+    //     : theme.colorScheme.primary.darken(0.3).withOpacity(0.1);
+    final color = theme.colorScheme.primary;
+
     return [
       BoxShadow(
-          color: color.darken(0.05), offset: const Offset(3, 3), blurRadius: 2),
+          color: theme.isLightMode
+              ? color.darken(0.05).withOpacity(0.1)
+              : color.darken(0.34),
+          offset: const Offset(3, 3),
+          blurRadius: 2),
       BoxShadow(
-          color: color.darken(0.05), offset: const Offset(6, 6), blurRadius: 4),
+          color: theme.isLightMode
+              ? color.darken(0.05).withOpacity(0.1)
+              : color.darken(0.34),
+          offset: const Offset(6, 6),
+          blurRadius: 4),
       BoxShadow(
-          color: color.darken(0.3),
+          color: theme.isLightMode
+              ? color.darken(0.3).withOpacity(0.1)
+              : color.darken(0.34),
           offset: const Offset(12, 12),
           blurRadius: 8),
     ];

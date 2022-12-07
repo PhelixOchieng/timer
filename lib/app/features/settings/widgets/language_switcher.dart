@@ -37,8 +37,6 @@ class LanguageSwitcher extends HookConsumerWidget {
     final itemWidth =
         (availableWidth - ((itemExtent - 1) * spacing)) / itemExtent;
 
-    debugPrint('Initial: ${initialLanguage.value} ${currentLanguage}');
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
