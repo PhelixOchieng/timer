@@ -17,4 +17,9 @@ class LanguageModel {
   Map<String, dynamic> toJson() {
     return {'name': name, 'code': code, 'icon': icon};
   }
+
+  @override
+  String toString() {
+    return 'LanguageModel(name: $name, code: $code, icon: $icon)';
+  }
 }

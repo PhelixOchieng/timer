@@ -19,6 +19,7 @@ class LanguagesRepository extends ChangeNotifier {
     final appLanguage = _storage.getAppLanguage();
     if (appLanguage != null) {
       _appLanguage = appLanguage;
+      _setAppLocaleFromLanguage(_appLanguage);
       return;
     }
 

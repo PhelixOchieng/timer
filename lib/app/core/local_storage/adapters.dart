@@ -24,12 +24,12 @@ class LanguageModelAdapter extends TypeAdapter<LanguageModel> {
 
   @override
   LanguageModel read(BinaryReader reader) {
-    final readValue = reader.read() as Map<String, dynamic>;
+    final readValue = Map<String, dynamic>.from(reader.read());
     return LanguageModel.fromJson(readValue);
   }
 
   @override
-  void write(BinaryWriter writer, LanguageModel language) {
-    writer.write(language.toJson());
+  void write(BinaryWriter writer, LanguageModel obj) {
+    writer.write(obj.toJson());
   }
 }

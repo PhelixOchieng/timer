@@ -18,6 +18,9 @@ class App extends ConsumerWidget {
     final appTheme = ref.watch(appThemeProvider);
     final languagesState = ref.watch(languagesProvider);
 
+    debugPrint(
+        'App Locale: ${languagesState.appLocale} ${languagesState.appLanguage}');
+
     return MaterialApp.router(
       title: 'Timer',
       localizationsDelegates: AppLocalizations.localizationsDelegates,

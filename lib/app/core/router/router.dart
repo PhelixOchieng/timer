@@ -9,7 +9,7 @@ import 'package:timer/app/features/views.dart';
 final routerProvider = Provider<GoRouter>(
   (ref) {
     return GoRouter(
-      initialLocation: '/settings',
+      initialLocation: '/',
       routes: [
         /// TODO: Add onboarding screen
         /// for showing onboarding

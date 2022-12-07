@@ -37,6 +37,8 @@ class LanguageSwitcher extends HookConsumerWidget {
     final itemWidth =
         (availableWidth - ((itemExtent - 1) * spacing)) / itemExtent;
 
+    debugPrint('Initial: ${initialLanguage.value} ${currentLanguage}');
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -47,7 +49,7 @@ class LanguageSwitcher extends HookConsumerWidget {
             TextButton(
                 onPressed: initialLanguage.value != currentLanguage
                     ? () {
-                        // languagesState.saveThemeMode(currentTheme);
+                        languagesState.saveAppLanguage(currentLanguage);
                         initialLanguage.value = currentLanguage;
                       }
                     : null,
@@ -58,7 +60,7 @@ class LanguageSwitcher extends HookConsumerWidget {
           spacing: spacing,
           runSpacing: runSpacing,
           children: languagesState.languages.map((lang) {
-            final isActive = currentLanguage == lang;
+            final isActive = currentLanguage.code == lang.code;
 
             return InkWell(
               onTap: () => languagesState.setAppLanguage(lang),
