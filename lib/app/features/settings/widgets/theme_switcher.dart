@@ -72,6 +72,7 @@ class ThemeSwitcher extends HookConsumerWidget {
               splashColor: theme.colorScheme.primaryContainer,
               borderRadius: BorderRadius.circular(8),
               child: Container(
+                padding: const EdgeInsets.all(8),
                 width: 90,
                 height: 90,
                 decoration: BoxDecoration(
@@ -90,6 +91,7 @@ class ThemeSwitcher extends HookConsumerWidget {
                               size: 32, color: isActive ? activeColor : null)),
                       const SizedBox(height: 8),
                       Text(label,
+                          textAlign: TextAlign.center,
                           style: isActive
                               ? textTheme.bodyMedium
                                   ?.copyWith(color: activeColor)

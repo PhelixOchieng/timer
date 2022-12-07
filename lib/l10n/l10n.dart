@@ -24,6 +24,8 @@ extension TranslationX on BuildContext {
       translated = l10n.spanish;
     } else if (text == 'Arabic') {
       translated = l10n.arabic;
+    } else if (text == 'Russian') {
+      translated = l10n.russian;
     }
 
     return translated;

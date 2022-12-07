@@ -108,6 +108,11 @@ class LanguagesRepository extends ChangeNotifier {
         code: 'es',
         icon:
             'https://purecatamphetamine.github.io/country-flag-icons/3x2/ES.svg'),
+    LanguageModel(
+        name: 'Russian',
+        code: 'ru',
+        icon:
+            'https://purecatamphetamine.github.io/country-flag-icons/3x2/RU.svg'),
   ];
 }
 

@@ -27,8 +27,8 @@ class LanguageSwitcher extends HookConsumerWidget {
         : Colors.white.withOpacity(0.1);
     final activeColor = theme.isLightMode ? null : kTextColorLight;
 
-    const spacing = 20.0;
-    const runSpacing = 20.0;
+    const spacing = 16.0;
+    const runSpacing = 16.0;
     const itemHeight = 100.0;
     const itemExtent = 3;
 
@@ -65,6 +65,7 @@ class LanguageSwitcher extends HookConsumerWidget {
               splashColor: theme.colorScheme.primaryContainer,
               borderRadius: BorderRadius.circular(8),
               child: Container(
+                padding: const EdgeInsets.all(8),
                 width: itemWidth,
                 height: itemHeight,
                 decoration: BoxDecoration(
