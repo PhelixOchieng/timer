@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:timer/app/common/constants/constants.dart';
 import 'package:timer/app/common/utils/extensions.dart';
 import 'package:timer/app/core/theme/app_theme.dart';
+import 'package:timer/l10n/l10n.dart';
 
 class ThemeSwitcher extends HookConsumerWidget {
   const ThemeSwitcher({Key? key}) : super(key: key);
@@ -27,17 +28,17 @@ class ThemeSwitcher extends HookConsumerWidget {
       {
         'mode': ThemeMode.light,
         'icon': Icons.light_mode_rounded,
-        'label': 'Light'
+        'label': context.l10n.light
       },
       {
         'mode': ThemeMode.dark,
         'icon': Icons.dark_mode_rounded,
-        'label': 'Dark'
+        'label': context.l10n.dark
       },
       {
         'mode': ThemeMode.system,
         'icon': Icons.devices_rounded,
-        'label': 'Automatic'
+        'label': context.l10n.automatic
       },
     ];
 
@@ -47,7 +48,7 @@ class ThemeSwitcher extends HookConsumerWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Theme', style: textTheme.titleLarge),
+            Text(context.l10n.theme, style: textTheme.titleLarge),
             TextButton(
                 onPressed: initialThemeMode.value != currentTheme
                     ? () {
@@ -55,7 +56,7 @@ class ThemeSwitcher extends HookConsumerWidget {
                         initialThemeMode.value = currentTheme;
                       }
                     : null,
-                child: Text('Save')),
+                child: Text(context.l10n.save)),
           ],
         ),
         Wrap(

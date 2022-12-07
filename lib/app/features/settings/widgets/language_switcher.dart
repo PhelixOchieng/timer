@@ -43,7 +43,7 @@ class LanguageSwitcher extends HookConsumerWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Language', style: textTheme.titleLarge),
+            Text(context.l10n.language, style: textTheme.titleLarge),
             TextButton(
                 onPressed: initialLanguage.value != currentLanguage
                     ? () {
@@ -51,7 +51,7 @@ class LanguageSwitcher extends HookConsumerWidget {
                         initialLanguage.value = currentLanguage;
                       }
                     : null,
-                child: Text('Save')),
+                child: Text(context.l10n.save)),
           ],
         ),
         Wrap(

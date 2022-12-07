@@ -1,4 +1,11 @@
 {
+  "save": "Save",
+  "language": "Language",
+  "theme": "Theme",
+  "settings": "Settings",
+  "light": "Light",
+  "dark": "Dark",
+  "automatic": "Automatic",
   "english": "English",
   "swahili": "Swahili",
   "portuguese": "Portuguese",
