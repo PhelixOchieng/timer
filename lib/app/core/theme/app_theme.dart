@@ -84,7 +84,15 @@ class AppTheme extends ChangeNotifier {
   /// for getting dark theme
   ThemeData get darkTheme {
     final base = _commonTheme(ThemeData.dark());
-    return base;
+
+    final colorScheme = base.colorScheme;
+    return base.copyWith(
+        scaffoldBackgroundColor: colorScheme.primary.darken(0.45),
+        appBarTheme: base.appBarTheme.copyWith(
+          color: colorScheme.primary.darken(0.43),
+          foregroundColor: kTextColorDark,
+          // surfaceTintColor: colorScheme.secondary,
+        ));
   }
 
   ThemeMode get themeMode => _themeMode;

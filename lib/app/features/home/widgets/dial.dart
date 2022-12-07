@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import 'package:timer/app/common/constants/constants.dart';
+import 'package:timer/app/common/utils/extensions.dart';
 
 class Dial extends HookWidget {
   const Dial({super.key});
@@ -284,34 +285,37 @@ class Dial extends HookWidget {
   }
 
   List<BoxShadow> _topLeftShadows(ThemeData theme) {
+    final color = theme.isLightMode
+        ? Colors.white
+        : theme.colorScheme.primary.darken(0.34);
+
     return [
-      const BoxShadow(
-        color: Colors.white,
-        offset: Offset(-3, -3),
+      BoxShadow(
+        color: color,
+        offset: const Offset(-3, -3),
       ),
       BoxShadow(
-          color: Colors.white.withOpacity(0.8),
+          color: color.withOpacity(0.8),
           offset: const Offset(-6, -6),
           blurRadius: 4),
       BoxShadow(
-          color: Colors.white.withOpacity(0.6),
+          color: color.withOpacity(0.6),
           offset: const Offset(-12, -12),
           blurRadius: 8),
     ];
   }
 
   List<BoxShadow> _bottomRightShadows(ThemeData theme) {
+    final color = theme.isLightMode
+        ? theme.colorScheme.primary.withOpacity(0.1)
+        : theme.colorScheme.primary.darken(0.3).withOpacity(0.1);
     return [
       BoxShadow(
-          color: theme.colorScheme.primary.darken(0.05).withOpacity(0.1),
-          offset: const Offset(3, 3),
-          blurRadius: 2),
+          color: color.darken(0.05), offset: const Offset(3, 3), blurRadius: 2),
       BoxShadow(
-          color: theme.colorScheme.primary.darken(0.05).withOpacity(0.1),
-          offset: const Offset(6, 6),
-          blurRadius: 4),
+          color: color.darken(0.05), offset: const Offset(6, 6), blurRadius: 4),
       BoxShadow(
-          color: theme.colorScheme.primary.darken(0.3).withOpacity(0.1),
+          color: color.darken(0.3),
           offset: const Offset(12, 12),
           blurRadius: 8),
     ];
