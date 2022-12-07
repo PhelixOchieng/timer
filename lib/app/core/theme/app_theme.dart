@@ -21,8 +21,8 @@ class AppTheme extends ChangeNotifier {
   }
 
   /// Actually writes the given theme to disk
-  Future<void> saveThemeMode(ThemeMode mode) async {
-    _themeMode = mode;
+  Future<void> saveThemeMode([ThemeMode? mode]) async {
+    _themeMode = mode ?? _themeMode;
     await _storage.putAppThemeMode(_themeMode);
     notifyListeners();
   }
