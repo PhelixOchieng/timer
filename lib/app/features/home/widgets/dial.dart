@@ -7,6 +7,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 import 'package:timer/app/common/constants/constants.dart';
 import 'package:timer/app/common/utils/extensions.dart';
+import 'package:timer/app/features/home/widgets/widgets.dart';
+import 'package:timer/l10n/l10n.dart';
 
 class Dial extends HookWidget {
   const Dial({super.key});
@@ -62,6 +64,14 @@ class Dial extends HookWidget {
 
         if (remainingSeconds <= 0) stopTimer();
       });
+    }
+
+    void goBack() {
+      if (isSelectingMinutes) {
+        timeSelection.value = TimeSelection.seconds;
+      } else if (isSelectingHours) {
+        timeSelection.value = TimeSelection.minutes;
+      }
     }
 
     useEffect(() {
@@ -177,16 +187,33 @@ class Dial extends HookWidget {
                         ? Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
+                              isSelectingSeconds
+                                  ? const SizedBox(height: 8)
+                                  : const SizedBox(height: 20),
                               DefaultTextStyle(
                                   style: textTheme.headline1!.copyWith(),
                                   child: isSelectingSeconds
-                                      ? Text('${selectedSeconds.value}')
+                                      ? Text(_parseTime(selectedSeconds.value))
                                       : isSelectingMinutes
-                                          ? Text('${selectedMinutes.value}')
-                                          : Text('${selectedHours.value}')),
-                              const SizedBox(height: 12),
-                              Text(
-                                  'Select ${isSelectingSeconds ? 'Seconds' : isSelectingMinutes ? 'Minutes' : 'Hours'}'),
+                                          ? Text(
+                                              _parseTime(selectedMinutes.value))
+                                          : Text(
+                                              _parseTime(selectedHours.value))),
+                              // const SizedBox(height: 12),
+                              Text(isSelectingSeconds
+                                  ? context.l10n.selectSeconds
+                                  : isSelectingMinutes
+                                      ? context.l10n.selectMinutes
+                                      : context.l10n.selectHours),
+                              // const SizedBox(height: 4),
+                              Text(context.l10n.pressToContinue,
+                                  style: textTheme.caption),
+                              if (!isSelectingSeconds)
+                                IconButton(
+                                    onPressed: goBack,
+                                    icon: const Icon(
+                                        Icons.keyboard_backspace_rounded),
+                                    color: theme.colorScheme.primary)
                             ],
                           )
                         : Column(

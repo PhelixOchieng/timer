@@ -1,4 +1,8 @@
 {
+  "pressToContinue": "Press To Continue",
+  "selectSeconds": "Select Seconds",
+  "selectMinutes": "Select Minutes",
+  "selectHours": "Select Hours",
   "save": "Save",
   "language": "Language",
   "theme": "Theme",

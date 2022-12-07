@@ -1,1 +1,36 @@
-{}
+{
+  "ar": [
+    "pressToContinue",
+    "selectSeconds",
+    "selectMinutes",
+    "selectHours"
+  ],
+
+  "es": [
+    "pressToContinue",
+    "selectSeconds",
+    "selectMinutes",
+    "selectHours"
+  ],
+
+  "fr": [
+    "pressToContinue",
+    "selectSeconds",
+    "selectMinutes",
+    "selectHours"
+  ],
+
+  "pt": [
+    "pressToContinue",
+    "selectSeconds",
+    "selectMinutes",
+    "selectHours"
+  ],
+
+  "ru": [
+    "pressToContinue",
+    "selectSeconds",
+    "selectMinutes",
+    "selectHours"
+  ]
+}
