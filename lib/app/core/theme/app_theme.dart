@@ -1,3 +1,4 @@
+import 'package:color_fns/color_fns.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -75,7 +76,9 @@ class AppTheme extends ChangeNotifier {
   /// for getting light theme
   ThemeData get lightTheme {
     final base = _commonTheme(ThemeData.light());
-    return base;
+    return base.copyWith(
+      scaffoldBackgroundColor: base.colorScheme.primary.lighten(0.47),
+    );
   }
 
   /// for getting dark theme
