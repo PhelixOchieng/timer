@@ -68,6 +68,7 @@ flutter:
   generate: true
   # To add assets to your application, add an assets section, like this:
   assets:
+    - assets/icons/countries/
     - .env.development
     - .env.production
   # An image asset can refer to one or more resolution-specific "variants", see

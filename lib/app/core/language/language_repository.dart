@@ -78,41 +78,13 @@ class LanguagesRepository extends ChangeNotifier {
   LanguageModel get appLanguage => _appLanguage;
 
   final languages = const <LanguageModel>[
-    LanguageModel(
-        name: 'English',
-        code: 'en',
-        icon:
-            'https://purecatamphetamine.github.io/country-flag-icons/3x2/GB.svg'),
-    LanguageModel(
-        name: 'Swahili',
-        code: 'sw',
-        icon:
-            'https://purecatamphetamine.github.io/country-flag-icons/3x2/TZ.svg'),
-    LanguageModel(
-        name: 'Portuguese',
-        code: 'pt',
-        icon:
-            'https://purecatamphetamine.github.io/country-flag-icons/3x2/PT.svg'),
-    LanguageModel(
-        name: 'Arabic',
-        code: 'ar',
-        icon:
-            'https://purecatamphetamine.github.io/country-flag-icons/3x2/SA.svg'),
-    LanguageModel(
-        name: 'French',
-        code: 'fr',
-        icon:
-            'https://purecatamphetamine.github.io/country-flag-icons/3x2/FR.svg'),
-    LanguageModel(
-        name: 'Spanish',
-        code: 'es',
-        icon:
-            'https://purecatamphetamine.github.io/country-flag-icons/3x2/ES.svg'),
-    LanguageModel(
-        name: 'Russian',
-        code: 'ru',
-        icon:
-            'https://purecatamphetamine.github.io/country-flag-icons/3x2/RU.svg'),
+    LanguageModel(name: 'English', code: 'en', icon: 'GB.svg'),
+    LanguageModel(name: 'Swahili', code: 'sw', icon: 'TZ.svg'),
+    LanguageModel(name: 'French', code: 'fr', icon: 'FR.svg'),
+    LanguageModel(name: 'Portuguese', code: 'pt', icon: 'PT.svg'),
+    LanguageModel(name: 'Russian', code: 'ru', icon: 'RU.svg'),
+    LanguageModel(name: 'Arabic', code: 'ar', icon: 'SA.svg'),
+    LanguageModel(name: 'Spanish', code: 'es', icon: 'ES.svg'),
   ];
 }
 

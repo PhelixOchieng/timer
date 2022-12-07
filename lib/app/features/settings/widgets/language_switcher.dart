@@ -80,8 +80,8 @@ class LanguageSwitcher extends HookConsumerWidget {
                     children: [
                       Opacity(
                           opacity: 0.7,
-                          child: SvgPicture.network(
-                            lang.icon,
+                          child: SvgPicture.asset(
+                            'assets/icons/countries/${lang.icon}',
                             width: itemWidth * 0.5,
                           )),
                       const SizedBox(height: 8),
