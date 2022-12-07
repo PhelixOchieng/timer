@@ -20,8 +20,10 @@ class SettingsView extends HookWidget {
       appBar: AppBar(title: Text('Settings')),
       body: ListView(
         padding: kAppPadding.copyWith(top: 20, bottom: 32),
-        children: [
-          const ThemeSwitcher(),
+        children: const [
+          LanguageSwitcher(),
+          SizedBox(height: 20),
+          ThemeSwitcher(),
         ],
       ),
     );

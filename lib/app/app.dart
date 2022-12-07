@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import 'core/language/language_repository.dart';
 import 'core/router/router.dart';
 import 'core/theme/app_theme.dart';
 
@@ -12,8 +14,9 @@ class App extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final appTheme = ref.watch(appThemeProvider);
     final router = ref.read(routerProvider);
+    final appTheme = ref.watch(appThemeProvider);
+    final languagesState = ref.watch(languagesProvider);
 
     return MaterialApp.router(
       title: 'Timer',
@@ -22,6 +25,7 @@ class App extends ConsumerWidget {
       theme: appTheme.lightTheme,
       darkTheme: appTheme.darkTheme,
       themeMode: appTheme.themeMode,
+      locale: languagesState.appLocale,
       routeInformationParser: router.routeInformationParser,
       routeInformationProvider: router.routeInformationProvider,
       routerDelegate: router.routerDelegate,

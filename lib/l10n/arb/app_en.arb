@@ -1,6 +1,8 @@
 {
-  "helloWorld": "Hello world",
-  "@helloWorld": {
-    "description": "Hello world text"
-  }
+  "english": "English",
+  "swahili": "Swahili",
+  "portuguese": "Portuguese",
+  "french": "French",
+  "spanish": "Spanish",
+  "arabic": "Arabic"
 }

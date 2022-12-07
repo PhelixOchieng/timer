@@ -17,7 +17,7 @@ class HomeView extends ConsumerWidget {
       appBar: AppBar(
         actions: [
           IconButton(
-              onPressed: () => context.goNamed(SettingsView.routeName),
+              onPressed: () => context.pushNamed(SettingsView.routeName),
               icon: const Icon(Icons.api_rounded))
         ],
       ),

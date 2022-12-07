@@ -24,7 +24,7 @@ class Dial extends HookWidget {
     final isSelectingMinutes = timeSelection.value == TimeSelection.minutes;
     final isSelectingHours = timeSelection.value == TimeSelection.hours;
 
-    final selectedSeconds = useState(12);
+    final selectedSeconds = useState(0);
     final selectedMinutes = useState(0);
     final selectedHours = useState(0);
     final countdownSeconds = useRef(0);

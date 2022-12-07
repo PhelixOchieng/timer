@@ -1,20 +1,24 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:timer/app/common/constants/constants.dart';
 import 'package:timer/app/common/utils/extensions.dart';
+import 'package:timer/app/core/language/language_repository.dart';
 import 'package:timer/app/core/theme/app_theme.dart';
+import 'package:timer/l10n/l10n.dart';
 
-class ThemeSwitcher extends HookConsumerWidget {
-  const ThemeSwitcher({Key? key}) : super(key: key);
+class LanguageSwitcher extends HookConsumerWidget {
+  const LanguageSwitcher({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final themeState = ref.watch(appThemeProvider);
-    final currentTheme = themeState.themeMode;
+    final languagesState = ref.watch(languagesProvider);
+    final currentLanguage = languagesState.appLanguage;
 
-    final initialThemeMode = useRef(currentTheme);
+    final initialLanguage = useRef(currentLanguage);
 
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
@@ -23,23 +27,15 @@ class ThemeSwitcher extends HookConsumerWidget {
         : Colors.white.withOpacity(0.1);
     final activeColor = theme.isLightMode ? null : kTextColorLight;
 
-    final options = [
-      {
-        'mode': ThemeMode.light,
-        'icon': Icons.light_mode_rounded,
-        'label': 'Light'
-      },
-      {
-        'mode': ThemeMode.dark,
-        'icon': Icons.dark_mode_rounded,
-        'label': 'Dark'
-      },
-      {
-        'mode': ThemeMode.system,
-        'icon': Icons.devices_rounded,
-        'label': 'Automatic'
-      },
-    ];
+    const spacing = 20.0;
+    const runSpacing = 20.0;
+    const itemHeight = 100.0;
+    const itemExtent = 3;
+
+    final availableWidth =
+        MediaQuery.of(context).size.width - kAppPadding.horizontal;
+    final itemWidth =
+        (availableWidth - ((itemExtent - 1) * spacing)) / itemExtent;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,32 +43,30 @@ class ThemeSwitcher extends HookConsumerWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Theme', style: textTheme.titleLarge),
+            Text('Language', style: textTheme.titleLarge),
             TextButton(
-                onPressed: initialThemeMode.value != currentTheme
+                onPressed: initialLanguage.value != currentLanguage
                     ? () {
-                        themeState.saveThemeMode(currentTheme);
-                        initialThemeMode.value = currentTheme;
+                        // languagesState.saveThemeMode(currentTheme);
+                        initialLanguage.value = currentLanguage;
                       }
                     : null,
                 child: Text('Save')),
           ],
         ),
         Wrap(
-          spacing: 20,
-          children: options.map((opt) {
-            final themeMode = opt['mode'] as ThemeMode;
-            final isActive = currentTheme == themeMode;
-            final icon = opt['icon'] as IconData;
-            final label = opt['label'] as String;
+          spacing: spacing,
+          runSpacing: runSpacing,
+          children: languagesState.languages.map((lang) {
+            final isActive = currentLanguage == lang;
 
             return InkWell(
-              onTap: () => themeState.setThemeMode(themeMode),
+              onTap: () => languagesState.setAppLanguage(lang),
               splashColor: theme.colorScheme.primaryContainer,
               borderRadius: BorderRadius.circular(8),
               child: Container(
-                width: 90,
-                height: 90,
+                width: itemWidth,
+                height: itemHeight,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                   color: isActive
@@ -85,10 +79,12 @@ class ThemeSwitcher extends HookConsumerWidget {
                     children: [
                       Opacity(
                           opacity: 0.7,
-                          child: Icon(icon,
-                              size: 32, color: isActive ? activeColor : null)),
+                          child: SvgPicture.network(
+                            lang.icon,
+                            width: itemWidth * 0.5,
+                          )),
                       const SizedBox(height: 8),
-                      Text(label,
+                      Text(context.translateIfExists(lang.name),
                           style: isActive
                               ? textTheme.bodyMedium
                                   ?.copyWith(color: activeColor)
@@ -99,7 +95,7 @@ class ThemeSwitcher extends HookConsumerWidget {
               ),
             );
           }).toList(),
-        ),
+        )
       ],
     );
   }
