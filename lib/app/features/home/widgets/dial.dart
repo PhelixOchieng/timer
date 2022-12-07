@@ -245,9 +245,29 @@ class Dial extends HookWidget {
                         width: detentSize,
                         height: detentSize,
                         decoration: BoxDecoration(
-                          color: theme.primaryColor,
-                          shape: BoxShape.circle,
-                        ),
+                            // color: theme.primaryColor,
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                                color: theme.colorScheme.secondary
+                                    .withOpacity(0.65)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: theme.colorScheme.secondary
+                                    .withOpacity(0.1),
+                                offset: const Offset(0, -1),
+                              ),
+                              // BoxShadow(
+                              //   color: theme.colorScheme.secondary
+                              //       .withOpacity(0.6),
+                              //   offset: const Offset(0, 0),
+                              //   blurRadius: 6,
+                              // ),
+                              BoxShadow(
+                                color: theme.colorScheme.secondary,
+                                spreadRadius: -5,
+                                blurRadius: 5,
+                              ),
+                            ]),
                       ),
                     ],
                   ),
