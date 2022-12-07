@@ -1,0 +1,92 @@
+import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import 'package:timer/app/common/constants/constants.dart';
+import 'package:timer/app/core/local_storage/app_storage.dart';
+
+class AppTheme extends ChangeNotifier {
+  final Ref _ref;
+  final AppStorage _storage;
+
+  ThemeMode _themeMode = ThemeMode.system;
+  AppTheme(this._ref) : _storage = _ref.read(appStorageProvider) {
+    _themeMode = _storage.getAppThemeMode();
+  }
+
+  /// Used to preview how the app would look without commiting to the theme
+  void setThemeMode(ThemeMode mode) {
+    _themeMode = mode;
+    notifyListeners();
+  }
+
+  /// Actually writes the given theme to disk
+  Future<void> saveThemeMode(ThemeMode mode) async {
+    _themeMode = mode;
+    await _storage.putAppThemeMode(_themeMode);
+    notifyListeners();
+  }
+
+  ThemeData _commonTheme(ThemeData base) {
+    final theme = base.copyWith(
+      useMaterial3: true,
+      primaryColor: kPrimaryColor,
+      brightness: base.brightness,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: kPrimaryColor,
+        primary: kPrimaryColor,
+        onPrimary: Colors.white,
+        secondary: kSecondaryColor,
+      ),
+      textTheme: base.textTheme.copyWith(
+        bodyMedium: base.textTheme.bodyMedium?.copyWith(
+          fontSize: 16,
+        ),
+      ),
+      appBarTheme: base.appBarTheme.copyWith(
+        centerTitle: true,
+        elevation: 3,
+        titleSpacing: 0,
+      ),
+      tabBarTheme: base.tabBarTheme.copyWith(
+        labelColor: kPrimaryColor,
+        indicatorSize: TabBarIndicatorSize.label,
+        indicator: const UnderlineTabIndicator(
+          borderSide: BorderSide(
+            width: 3,
+            color: kPrimaryColor,
+          ),
+          insets: EdgeInsets.symmetric(vertical: 8),
+        ),
+      ),
+      // elevatedButtonTheme: ElevatedButtonThemeData(
+      //   style: ElevatedButton.styleFrom(
+      //     backgroundColor: kPrimaryColor,
+      //     foregroundColor: Colors.white,
+      //     shape: RoundedRectangleBorder(
+      //       borderRadius: BorderRadius.circular(5),
+      //     ),
+      //   ),
+      // ),
+    );
+
+    return theme;
+  }
+
+  /// for getting light theme
+  ThemeData get lightTheme {
+    final base = _commonTheme(ThemeData.light());
+    return base;
+  }
+
+  /// for getting dark theme
+  ThemeData get darkTheme {
+    final base = _commonTheme(ThemeData.dark());
+    return base;
+  }
+
+  ThemeMode get themeMode => _themeMode;
+}
+
+/// for providing app theme [AppTheme]
+final appThemeProvider =
+    ChangeNotifierProvider<AppTheme>((ref) => AppTheme(ref));
