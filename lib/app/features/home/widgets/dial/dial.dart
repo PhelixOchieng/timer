@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:color_fns/color_fns.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:timer/app/common/constants/constants.dart';
 import 'package:timer/app/common/utils/extensions.dart';
@@ -13,11 +14,13 @@ import 'package:timer/l10n/l10n.dart';
 import 'input_sheet.dart';
 import 'enums.dart';
 
-class Dial extends HookWidget {
-  const Dial({super.key});
+class Dial extends HookConsumerWidget {
+  const Dial({super.key, required this.onPlay});
+
+  final void Function() onPlay;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final pressedAnimationController = useAnimationController(
       duration: const Duration(milliseconds: 100),
       lowerBound: 0.96,
@@ -39,7 +42,7 @@ class Dial extends HookWidget {
     final dialRotationAngle = useState(0.0);
     final timer = useRef<Timer?>(null);
     final isTimerRunning = timer.value != null;
-    void stopTimer() {
+    void stopTimer({bool playSound = false}) {
       debugPrint('Stop timer: ${countdownSeconds.value}');
       timer.value?.cancel();
       timer.value = null;
@@ -48,6 +51,8 @@ class Dial extends HookWidget {
       countdownSeconds.value = 0;
       dialRotationAngle.value = 0;
       selectedSeconds.value = selectedMinutes.value = selectedHours.value = 0;
+
+      if (playSound) onPlay();
     }
 
     void startCountdown() {
@@ -65,7 +70,7 @@ class Dial extends HookWidget {
         selectedMinutes.value = ((remainingSeconds % (60 * 60)) / 60).floor();
         selectedSeconds.value = ((remainingSeconds % 60)).floor();
 
-        if (remainingSeconds <= 0) stopTimer();
+        if (remainingSeconds <= 0) stopTimer(playSound: true);
       });
     }
 
