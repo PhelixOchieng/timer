@@ -123,7 +123,14 @@ class Dial extends HookConsumerWidget {
       });
     }
 
+    final gotoTimeViewAfterSelection = useRef(false);
     void gotoNext() {
+      if (gotoTimeViewAfterSelection.value) {
+        timeSelection.value = null;
+        gotoTimeViewAfterSelection.value = false;
+        return;
+      }
+
       if (isSelectingSeconds) {
         timeSelection.value = TimeSelection.minutes;
       } else if (isSelectingMinutes) {
@@ -142,6 +149,12 @@ class Dial extends HookConsumerWidget {
     }
 
     void goBack() {
+      if (gotoTimeViewAfterSelection.value) {
+        timeSelection.value = null;
+        gotoTimeViewAfterSelection.value = false;
+        return;
+      }
+
       if (isSelectingMinutes) {
         timeSelection.value = TimeSelection.seconds;
       } else if (isSelectingHours) {
@@ -162,8 +175,6 @@ class Dial extends HookConsumerWidget {
           break;
         case null:
       }
-
-      debugPrint('${dialRotationAngle.value} - ${timeSelection.value}');
 
       return;
     }, [timeSelection.value]);
@@ -303,11 +314,38 @@ class Dial extends HookConsumerWidget {
                                   style: textTheme.headline1!,
                                   child: Row(
                                     children: [
-                                      Text(_parseTime(selectedHours.value)),
+                                      GestureDetector(
+                                        onLongPress: () {
+                                          gotoTimeViewAfterSelection.value =
+                                              true;
+                                          timeSelection.value =
+                                              TimeSelection.hours;
+                                        },
+                                        child: Text(
+                                            _parseTime(selectedHours.value)),
+                                      ),
                                       const Text(':'),
-                                      Text(_parseTime(selectedMinutes.value)),
+                                      GestureDetector(
+                                        onLongPress: () {
+                                          gotoTimeViewAfterSelection.value =
+                                              true;
+                                          timeSelection.value =
+                                              TimeSelection.minutes;
+                                        },
+                                        child: Text(
+                                            _parseTime(selectedMinutes.value)),
+                                      ),
                                       const Text(':'),
-                                      Text(_parseTime(selectedSeconds.value)),
+                                      GestureDetector(
+                                        onLongPress: () {
+                                          gotoTimeViewAfterSelection.value =
+                                              true;
+                                          timeSelection.value =
+                                              TimeSelection.seconds;
+                                        },
+                                        child: Text(
+                                            _parseTime(selectedSeconds.value)),
+                                      ),
                                     ],
                                   ),
                                 ),

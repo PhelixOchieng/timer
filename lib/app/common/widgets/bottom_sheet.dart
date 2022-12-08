@@ -17,7 +17,8 @@ class _BottomSheetWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final query = MediaQuery.of(context);
-    final bottomPadding = query.viewInsets.bottom + 12.0;
+    final bottomPadding =
+        query.viewInsets.bottom + query.viewPadding.bottom + 12.0;
 
     return BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
@@ -34,6 +35,8 @@ class _BottomSheetWrapper extends StatelessWidget {
 void showCustomModalBottomSheet({
   required BuildContext context,
   required Widget Function(BuildContext) builder,
+  bool isScrollControlled = false,
+  bool enableDrag = false,
 }) {
   final theme = Theme.of(context);
 
@@ -43,5 +46,7 @@ void showCustomModalBottomSheet({
           ? const Color.fromRGBO(161, 161, 161, 0.25)
           : Colors.black.withOpacity(0.25),
       backgroundColor: Colors.transparent,
+      isScrollControlled: isScrollControlled,
+      enableDrag: enableDrag,
       builder: (context) => _BottomSheetWrapper(child: builder(context)));
 }
