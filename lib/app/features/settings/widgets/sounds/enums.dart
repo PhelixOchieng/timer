@@ -1,0 +1,4 @@
+enum SoundSelection {
+  alarm,
+  detents;
+}

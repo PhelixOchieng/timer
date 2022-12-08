@@ -51,7 +51,7 @@ class Dial extends HookConsumerWidget {
     const detentVolume = 0.5;
     final playerFuture = useFuture(playerState.createPlayer(
       'detent',
-      source: AssetSource('sounds/click_1.mp3'),
+      source: AssetSource('click_1.mp3'),
       volume: detentVolume,
     ));
     final player = playerFuture.data;

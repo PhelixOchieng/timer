@@ -69,6 +69,10 @@ class AppTheme extends ChangeNotifier {
           foregroundColor: Colors.white,
         ),
       ),
+      listTileTheme: base.listTileTheme.copyWith(
+        contentPadding: EdgeInsets.symmetric(
+            vertical: 0, horizontal: kAppPadding.horizontal / 2),
+      ),
     );
 
     return theme;

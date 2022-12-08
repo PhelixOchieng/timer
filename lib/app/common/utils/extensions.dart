@@ -7,3 +7,9 @@ extension ThemeX on ThemeData {
   Color get surfaceColor =>
       isLightMode ? Colors.white : scaffoldBackgroundColor.lighten(0.05);
 }
+
+extension NavigationX on BuildContext {
+  void swipeTo(Widget target) {
+    Navigator.of(this).push(MaterialPageRoute(builder: (_) => target));
+  }
+}

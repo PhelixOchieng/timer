@@ -1,4 +1,7 @@
 {
+  "alarm": "Alarm",
+  "detents": "Detents",
+  "sounds": "Sounds",
   "appTitle": "Timer",
   "fieldRequired": "This field is required",
   "notNumber": "Only digits are allowed",

@@ -1,21 +1,42 @@
 {
   "ar": [
+    "alarm",
+    "detents",
+    "sounds",
     "appTitle"
   ],
 
   "es": [
+    "alarm",
+    "detents",
+    "sounds",
     "appTitle"
   ],
 
   "fr": [
+    "alarm",
+    "detents",
+    "sounds",
     "appTitle"
   ],
 
   "pt": [
+    "alarm",
+    "detents",
+    "sounds",
     "appTitle"
   ],
 
+  "ru": [
+    "alarm",
+    "detents",
+    "sounds"
+  ],
+
   "sw": [
+    "alarm",
+    "detents",
+    "sounds",
     "appTitle"
   ]
 }

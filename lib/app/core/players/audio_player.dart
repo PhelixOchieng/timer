@@ -20,7 +20,11 @@ class AudioPlayerProvider extends ChangeNotifier {
     if (potentialPlayer != null) return potentialPlayer;
 
     final player = AudioPlayer(playerId: playerID);
+    final cache = AudioCache(prefix: 'assets/sounds/');
+    player.audioCache = cache;
+
     if (source != null) await player.setSource(source);
+    await player.stop();
 
     ReleaseMode releaseMode = ReleaseMode.stop;
     if (loop) {
@@ -65,6 +69,12 @@ class AudioPlayerProvider extends ChangeNotifier {
 
     await Future.wait(futures.map((f) => f()));
     _players.clear();
+  }
+
+  Future<void> releasePlayer(String id) async {
+    final player = _players[id];
+    player?.release();
+    _players.remove(id);
   }
 
   AudioPlayer? getPlayerByID(String id) {

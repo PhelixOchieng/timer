@@ -42,68 +42,72 @@ class ThemeSwitcher extends HookConsumerWidget {
       },
     ];
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(context.l10n.theme, style: textTheme.titleLarge),
-            TextButton(
-                onPressed: initialThemeMode.value != currentTheme
-                    ? () {
-                        themeState.saveThemeMode(currentTheme);
-                        initialThemeMode.value = currentTheme;
-                      }
-                    : null,
-                child: Text(context.l10n.save)),
-          ],
-        ),
-        Wrap(
-          spacing: 20,
-          children: options.map((opt) {
-            final themeMode = opt['mode'] as ThemeMode;
-            final isActive = currentTheme == themeMode;
-            final icon = opt['icon'] as IconData;
-            final label = opt['label'] as String;
+    return Padding(
+      padding: kAppPadding,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(context.l10n.theme, style: textTheme.titleLarge),
+              TextButton(
+                  onPressed: initialThemeMode.value != currentTheme
+                      ? () {
+                          themeState.saveThemeMode(currentTheme);
+                          initialThemeMode.value = currentTheme;
+                        }
+                      : null,
+                  child: Text(context.l10n.save)),
+            ],
+          ),
+          Wrap(
+            spacing: 20,
+            children: options.map((opt) {
+              final themeMode = opt['mode'] as ThemeMode;
+              final isActive = currentTheme == themeMode;
+              final icon = opt['icon'] as IconData;
+              final label = opt['label'] as String;
 
-            return InkWell(
-              onTap: () => themeState.setThemeMode(themeMode),
-              splashColor: theme.colorScheme.primaryContainer,
-              borderRadius: BorderRadius.circular(8),
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                width: 90,
-                height: 90,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: isActive
-                      ? theme.colorScheme.primaryContainer
-                      : inactiveChipColor,
-                ),
-                child: Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Opacity(
-                          opacity: 0.7,
-                          child: Icon(icon,
-                              size: 32, color: isActive ? activeColor : null)),
-                      const SizedBox(height: 8),
-                      Text(label,
-                          textAlign: TextAlign.center,
-                          style: isActive
-                              ? textTheme.bodyMedium
-                                  ?.copyWith(color: activeColor)
-                              : null),
-                    ],
+              return InkWell(
+                onTap: () => themeState.setThemeMode(themeMode),
+                splashColor: theme.colorScheme.primaryContainer,
+                borderRadius: BorderRadius.circular(8),
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  width: 90,
+                  height: 90,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: isActive
+                        ? theme.colorScheme.primaryContainer
+                        : inactiveChipColor,
+                  ),
+                  child: Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Opacity(
+                            opacity: 0.7,
+                            child: Icon(icon,
+                                size: 32,
+                                color: isActive ? activeColor : null)),
+                        const SizedBox(height: 8),
+                        Text(label,
+                            textAlign: TextAlign.center,
+                            style: isActive
+                                ? textTheme.bodyMedium
+                                    ?.copyWith(color: activeColor)
+                                : null),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            );
-          }).toList(),
-        ),
-      ],
+              );
+            }).toList(),
+          ),
+        ],
+      ),
     );
   }
 }

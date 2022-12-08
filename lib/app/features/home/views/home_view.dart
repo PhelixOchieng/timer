@@ -8,6 +8,8 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:timer/app/core/players/audio_player.dart';
+import 'package:timer/app/features/settings/models/sounds_model.dart';
+import 'package:timer/app/features/settings/repository/sounds_repository.dart';
 import 'package:timer/l10n/l10n.dart';
 import 'package:timer/app/features/views.dart';
 
@@ -22,22 +24,53 @@ class HomeView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final playersState = ref.watch(audioPlayerProvider);
-    final playerFuture = useFuture(playersState.createPlayer('alarm-done',
-        source: AssetSource('sounds/beep_1.mp3'), loop: true));
-    final player = playerFuture.data;
+    final soundsState = ref.watch(soundsProvider);
+
+    final playerS = useState<AudioPlayer?>(null);
+    final player = playerS.value;
+    void initPlayer() async {
+      debugPrint('Init Player');
+      // if (player != null) playersState.releasePlayer(player.playerId);
+
+      final source = _getSource(soundsState.alarmSound);
+      playerS.value = await playersState.createPlayer(
+        'alarm-done',
+        source: source,
+        loop: true,
+        // mode: PlayerMode.mediaPlayer,
+      );
+    }
+
+    useEffect(() {
+      debugPrint('Home Init');
+      initPlayer();
+
+      return;
+    }, []);
+
+    useEffect(() {
+      debugPrint('Alarm change: $player');
+      final source = _getSource(soundsState.alarmSound);
+      player?.setSource(source);
+
+      return;
+    }, [soundsState.alarmSound]);
 
     final isPlayingAudio = useState(false);
 
     final vibrationTimer = useRef<Timer?>(null);
     void playAudio() async {
+      debugPrint('Play: $player');
       vibrationTimer.value?.cancel();
+      await player?.stop();
       await player?.resume();
+      debugPrint('PS: ${player?.state}');
       isPlayingAudio.value = true;
 
-      vibrationTimer.value =
-          Timer.periodic(const Duration(seconds: 4), (timer) {
-        HapticFeedback.lightImpact();
-      });
+      // vibrationTimer.value =
+      //     Timer.periodic(const Duration(seconds: 4), (timer) {
+      //   HapticFeedback.lightImpact();
+      // });
     }
 
     void stopAudio() async {
@@ -90,5 +123,11 @@ class HomeView extends HookConsumerWidget {
         ],
       ),
     );
+  }
+
+  Source _getSource(SoundModel sound) {
+    final source =
+        sound.isAsset ? AssetSource(sound.path) : DeviceFileSource(sound.path);
+    return source;
   }
 }
