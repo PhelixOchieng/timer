@@ -7,8 +7,11 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 import 'package:timer/app/common/constants/constants.dart';
 import 'package:timer/app/common/utils/extensions.dart';
-import 'package:timer/app/features/home/widgets/widgets.dart';
+import 'package:timer/app/common/widgets/widgets.dart';
 import 'package:timer/l10n/l10n.dart';
+
+import 'input_sheet.dart';
+import 'enums.dart';
 
 class Dial extends HookWidget {
   const Dial({super.key});
@@ -190,15 +193,28 @@ class Dial extends HookWidget {
                               isSelectingSeconds
                                   ? const SizedBox(height: 8)
                                   : const SizedBox(height: 20),
-                              DefaultTextStyle(
-                                  style: textTheme.headline1!.copyWith(),
-                                  child: isSelectingSeconds
-                                      ? Text(_parseTime(selectedSeconds.value))
-                                      : isSelectingMinutes
-                                          ? Text(
-                                              _parseTime(selectedMinutes.value))
-                                          : Text(
-                                              _parseTime(selectedHours.value))),
+                              GestureDetector(
+                                onTap: () {
+                                  showCustomModalBottomSheet(
+                                      context: context,
+                                      builder: (_) => InputSheet(
+                                            timeSelection: timeSelection,
+                                            selectedSeconds: selectedSeconds,
+                                            selectedMinutes: selectedMinutes,
+                                            selectedHours: selectedHours,
+                                          ));
+                                },
+                                child: DefaultTextStyle(
+                                    style: textTheme.headline1!.copyWith(),
+                                    child: isSelectingSeconds
+                                        ? Text(
+                                            _parseTime(selectedSeconds.value))
+                                        : isSelectingMinutes
+                                            ? Text(_parseTime(
+                                                selectedMinutes.value))
+                                            : Text(_parseTime(
+                                                selectedHours.value))),
+                              ),
                               // const SizedBox(height: 12),
                               Text(isSelectingSeconds
                                   ? context.l10n.selectSeconds
@@ -359,10 +375,4 @@ class Dial extends HookWidget {
           blurRadius: 8),
     ];
   }
-}
-
-enum TimeSelection {
-  seconds,
-  minutes,
-  hours;
 }

@@ -59,15 +59,16 @@ class AppTheme extends ChangeNotifier {
           insets: EdgeInsets.symmetric(vertical: 8),
         ),
       ),
-      // elevatedButtonTheme: ElevatedButtonThemeData(
-      //   style: ElevatedButton.styleFrom(
-      //     backgroundColor: kPrimaryColor,
-      //     foregroundColor: Colors.white,
-      //     shape: RoundedRectangleBorder(
-      //       borderRadius: BorderRadius.circular(5),
-      //     ),
-      //   ),
-      // ),
+      inputDecorationTheme: base.inputDecorationTheme.copyWith(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: kPrimaryColor,
+          foregroundColor: Colors.white,
+        ),
+      ),
     );
 
     return theme;
@@ -76,8 +77,18 @@ class AppTheme extends ChangeNotifier {
   /// for getting light theme
   ThemeData get lightTheme {
     final base = _commonTheme(ThemeData.light());
+    final scaffoldBackgroundColor = base.colorScheme.primary.lighten(0.47);
     return base.copyWith(
-      scaffoldBackgroundColor: base.colorScheme.primary.lighten(0.47),
+      scaffoldBackgroundColor: scaffoldBackgroundColor,
+      appBarTheme: base.appBarTheme.copyWith(
+        color: scaffoldBackgroundColor,
+        elevation: 0,
+      ),
+      inputDecorationTheme: base.inputDecorationTheme.copyWith(
+        border: base.inputDecorationTheme.border?.copyWith(
+          borderSide: const BorderSide(color: Colors.black12),
+        ),
+      ),
     );
   }
 
@@ -87,12 +98,17 @@ class AppTheme extends ChangeNotifier {
 
     final colorScheme = base.colorScheme;
     return base.copyWith(
-        scaffoldBackgroundColor: colorScheme.primary.darken(0.45),
-        appBarTheme: base.appBarTheme.copyWith(
-          color: colorScheme.primary.darken(0.43),
-          foregroundColor: kTextColorDark,
-          // surfaceTintColor: colorScheme.secondary,
-        ));
+      scaffoldBackgroundColor: colorScheme.primary.darken(0.45),
+      appBarTheme: base.appBarTheme.copyWith(
+        color: colorScheme.primary.darken(0.43),
+        foregroundColor: kTextColorDark,
+      ),
+      inputDecorationTheme: base.inputDecorationTheme.copyWith(
+        border: base.inputDecorationTheme.border?.copyWith(
+          borderSide: const BorderSide(color: Colors.white38),
+        ),
+      ),
+    );
   }
 
   ThemeMode get themeMode => _themeMode;

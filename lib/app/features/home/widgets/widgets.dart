@@ -1,1 +1,1 @@
-export 'dial.dart';
+export 'dial/dial.dart';
