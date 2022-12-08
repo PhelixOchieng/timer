@@ -1,11 +1,10 @@
 {
   "fieldRequired": "Sehemu hii inahitajika",
   "notNumber": "Nambari pekee ndizo zinazoruhusiwa",
-  "stop": "Simamisha",
   "numberRangeInvalid": "Nambari halali ni kati ya {lowerBound} na {upperBound}",
   "tapToStart": "Bonyeza Ili Kuendelea",
   "reset": "Weka upya",
-  "stopTimer": "Zima",
+  "stop": "Simamisha",
   "pressToContinue": "Bonyeza Ili Kuendelea",
   "selectSeconds": "Chagua Sekunde",
   "selectMinutes": "Chagua Dakika",
