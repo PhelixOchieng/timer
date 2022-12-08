@@ -1,9 +1,13 @@
 {
+  "tapToStart": "Bonyeza Ili Kuendelea",
+  "reset": "Weka upya",
+  "stopTimer": "Zima",
   "pressToContinue": "Bonyeza Ili Kuendelea",
   "selectSeconds": "Chagua Sekunde",
   "selectMinutes": "Chagua Dakika",
   "selectHours": "Chagua Saa",
   "save": "Hifadhi",
+  "cancel": "Ghairi",
   "language": "Lugha",
   "theme": "Mandhari",
   "settings": "Mipangilio",

@@ -20,15 +20,16 @@ class HomeView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final playersState = ref.watch(audioPlayerProvider);
-    final player = playersState.createPlayer('alarm-done',
-        mode: PlayerMode.lowLatency, loop: true);
+    final playerFuture = useFuture(playersState.createPlayer('alarm-done',
+        source: AssetSource('sounds/beep_1.mp3'), loop: true));
+    final player = playerFuture.data;
 
     final isPlayingAudio = useState(false);
 
     final vibrationTimer = useRef<Timer?>(null);
     void playAudio() async {
       vibrationTimer.value?.cancel();
-      await player.play(AssetSource('sounds/bell_2.mp3'));
+      await player?.resume();
       isPlayingAudio.value = true;
 
       vibrationTimer.value =
@@ -38,7 +39,7 @@ class HomeView extends HookConsumerWidget {
     }
 
     void stopAudio() async {
-      await player.stop();
+      await player?.stop();
       vibrationTimer.value?.cancel();
 
       isPlayingAudio.value = false;
@@ -56,6 +57,7 @@ class HomeView extends HookConsumerWidget {
       ),
       body: Column(
         children: [
+          // Text('${player?.playerId} ${player?.releaseMode}'),
           Expanded(child: Center(child: Dial(onPlay: playAudio))),
           // ElevatedButton(
           //     onPressed: () async {

@@ -7,14 +7,31 @@ class AudioPlayerProvider extends ChangeNotifier {
   AudioPlayerProvider(this._ref);
 
   Map<String, AudioPlayer> _players = {};
-  AudioPlayer createPlayer(String playerID,
-      {PlayerMode? mode, bool loop = false}) {
+  Future<AudioPlayer> createPlayer(
+    String playerID, {
+    PlayerMode mode = PlayerMode.lowLatency,
+    bool loop = false,
+    bool release = false,
+    double volume = 1,
+    Source? source,
+  }) async {
+    // debugPrint('Players: $_players');
     final potentialPlayer = _players[playerID];
     if (potentialPlayer != null) return potentialPlayer;
 
     final player = AudioPlayer(playerId: playerID);
-    if (mode != null) player.setPlayerMode(mode);
-    if (loop) player.setReleaseMode(ReleaseMode.loop);
+    if (source != null) await player.setSource(source);
+
+    ReleaseMode releaseMode = ReleaseMode.stop;
+    if (loop) {
+      releaseMode = ReleaseMode.loop;
+    } else if (release) {
+      releaseMode = ReleaseMode.release;
+    }
+    await player.setReleaseMode(releaseMode);
+
+    await player.setPlayerMode(mode);
+    await player.setVolume(volume);
 
     _players[playerID] = player;
     return player;

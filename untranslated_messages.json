@@ -1,36 +1,56 @@
 {
   "ar": [
+    "tapToStart",
+    "reset",
+    "stopTimer",
     "pressToContinue",
     "selectSeconds",
     "selectMinutes",
-    "selectHours"
+    "selectHours",
+    "cancel"
   ],
 
   "es": [
+    "tapToStart",
+    "reset",
+    "stopTimer",
     "pressToContinue",
     "selectSeconds",
     "selectMinutes",
-    "selectHours"
+    "selectHours",
+    "cancel"
   ],
 
   "fr": [
+    "tapToStart",
+    "reset",
+    "stopTimer",
     "pressToContinue",
     "selectSeconds",
     "selectMinutes",
-    "selectHours"
+    "selectHours",
+    "cancel"
   ],
 
   "pt": [
+    "tapToStart",
+    "reset",
+    "stopTimer",
     "pressToContinue",
     "selectSeconds",
     "selectMinutes",
-    "selectHours"
+    "selectHours",
+    "cancel"
   ],
 
   "ru": [
+    "tapToStart",
+    "reset",
+    "stopTimer",
     "pressToContinue",
     "selectSeconds",
     "selectMinutes",
-    "selectHours"
+    "selectHours",
+    "cancel"
   ]
 }

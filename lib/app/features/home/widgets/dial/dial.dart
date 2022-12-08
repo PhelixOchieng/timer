@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:color_fns/color_fns.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -9,6 +10,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:timer/app/common/constants/constants.dart';
 import 'package:timer/app/common/utils/extensions.dart';
 import 'package:timer/app/common/widgets/widgets.dart';
+import 'package:timer/app/core/players/audio_player.dart';
 import 'package:timer/l10n/l10n.dart';
 
 import 'input_sheet.dart';
@@ -21,6 +23,8 @@ class Dial extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final playerState = ref.watch(audioPlayerProvider);
+
     final pressedAnimationController = useAnimationController(
       duration: const Duration(milliseconds: 100),
       lowerBound: 0.96,
@@ -40,6 +44,50 @@ class Dial extends HookConsumerWidget {
         isSelectingSeconds || isSelectingMinutes || isSelectingHours;
 
     final dialRotationAngle = useState(0.0);
+    void setRotationAngle(double angle) async {
+      dialRotationAngle.value = angle;
+    }
+
+    const detentVolume = 0.5;
+    final playerFuture = useFuture(playerState.createPlayer(
+      'detent',
+      source: AssetSource('sounds/click_1.mp3'),
+      volume: detentVolume,
+    ));
+    final player = playerFuture.data;
+    Future<void> playDetent() async {
+      if (player == null) return;
+
+      await player.stop();
+      await player.resume();
+    }
+
+    useEffect(() {
+      player?.setVolume(detentVolume).then((_) => playDetent());
+      return;
+    }, [selectedSeconds.value]);
+
+    final detentPlayTimer = useRef<Timer?>(null);
+    void fn() async {
+      detentPlayTimer.value?.cancel();
+
+      detentPlayTimer.value =
+          Timer.periodic(const Duration(milliseconds: 800), (timer) async {
+        await player!.setVolume(0);
+        await playDetent();
+      });
+    }
+
+    useEffect(() {
+      if (player == null || timeSelection.value == null) {
+        detentPlayTimer.value?.cancel();
+        return;
+      }
+
+      fn();
+      return;
+    }, [timeSelection.value, player]);
+
     final timer = useRef<Timer?>(null);
     final isTimerRunning = timer.value != null;
     void stopTimer({bool playSound = false}) {
@@ -119,6 +167,12 @@ class Dial extends HookConsumerWidget {
       return;
     }, [timeSelection.value]);
 
+    useEffect(() {
+      return () {
+        detentPlayTimer.value?.cancel();
+      };
+    }, []);
+
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
 
@@ -134,6 +188,8 @@ class Dial extends HookConsumerWidget {
       onTapUp: (_) => pressedAnimationController.forward(),
       onTapCancel: pressedAnimationController.forward,
       onTap: gotoNext,
+      // TODO: Only run the detent loop when the user is not panning
+      onPanDown: (_) {},
       onPanUpdate: (details) {
         final pos = details.localPosition;
 
@@ -155,7 +211,7 @@ class Dial extends HookConsumerWidget {
         if (angle == 2 * pi) angle = 0;
 
         // debugPrint('$angle ${angle * (180 / pi)} ${angleDeg % 6}');
-        dialRotationAngle.value = angle;
+        setRotationAngle(angle);
 
         final angleDeg = (angle * (180 / pi)).floor();
         if (isSelectingSeconds) {
@@ -167,19 +223,10 @@ class Dial extends HookConsumerWidget {
         }
       },
       onPanEnd: (_) {
-        double angle = dialRotationAngle.value;
-        final angleDeg = (angle * (180 / pi)).floor();
+        final angle =
+            _shouldUpdateAngle(dialRotationAngle.value, isSelectingHours);
+        if (angle == null) return;
 
-        double angleChange = 0;
-        if (isSelectingSeconds || isSelectingMinutes) {
-          angleChange = 360 / 60;
-        } else if (isSelectingHours) {
-          angleChange = 360 / 24;
-        }
-
-        if (angleDeg % angleChange == 0) return;
-
-        angle -= (angleDeg % angleChange) * ((2 * pi) / 360);
         dialRotationAngle.value = angle;
       },
       child: Transform.scale(
@@ -266,7 +313,7 @@ class Dial extends HookConsumerWidget {
                               ),
                               if (!isTimerRunning) ...[
                                 const SizedBox(height: 12),
-                                const Text('Tap To Start',
+                                Text(context.l10n.tapToStart,
                                     textAlign: TextAlign.center),
                                 const SizedBox(height: 4),
                                 InkWell(
@@ -274,7 +321,7 @@ class Dial extends HookConsumerWidget {
                                   child: TextButton.icon(
                                     onPressed: stopTimer,
                                     icon: const Icon(Icons.restart_alt),
-                                    label: Text('Reset',
+                                    label: Text(context.l10n.reset,
                                         textAlign: TextAlign.center),
                                   ),
                                 )
@@ -283,11 +330,12 @@ class Dial extends HookConsumerWidget {
                                 TextButton.icon(
                                     onPressed: stopTimer,
                                     icon: const Icon(Icons.stop_rounded),
-                                    label: Text('Stop Timer'))
+                                    label: Text(context.l10n.stopTimer))
                             ],
                           )),
               ),
             ),
+            // Text('${player?.playerId} ${player?.releaseMode}'),
             if (isSelecting)
               Positioned(
                 left: (dialSize / 2) - (detentSize / 2),
@@ -338,6 +386,22 @@ class Dial extends HookConsumerWidget {
 
   String _parseTime(int time) {
     return time < 10 ? '0$time' : '$time';
+  }
+
+  double? _shouldUpdateAngle(double angle, bool isSelectingHours) {
+    final angleDeg = (angle * (180 / pi)).floor();
+
+    double angleChange = 0;
+    if (isSelectingHours) {
+      angleChange = 360 / 24;
+    } else {
+      angleChange = 360 / 60;
+    }
+
+    if (angleDeg % angleChange == 0) return null;
+
+    angle -= (angleDeg % angleChange) * ((2 * pi) / 360);
+    return angle;
   }
 
   List<BoxShadow> _topLeftShadows(ThemeData theme) {
