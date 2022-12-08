@@ -324,8 +324,8 @@ class Dial extends HookConsumerWidget {
                                       ? context.l10n.selectMinutes
                                       : context.l10n.selectHours),
                               // const SizedBox(height: 4),
-                              Text(context.l10n.pressToContinue,
-                                  style: textTheme.caption),
+                              // Text(context.l10n.pressToContinue,
+                              //     style: textTheme.caption),
                               if (!isSelectingSeconds)
                                 IconButton(
                                     onPressed: goBack,
@@ -393,7 +393,6 @@ class Dial extends HookConsumerWidget {
                                 const SizedBox(height: 12),
                                 Text(context.l10n.tapToStart,
                                     textAlign: TextAlign.center),
-                                const SizedBox(height: 4),
                                 InkWell(
                                   onTap: () {},
                                   child: TextButton.icon(
