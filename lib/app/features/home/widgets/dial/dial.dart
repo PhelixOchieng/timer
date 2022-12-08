@@ -65,7 +65,7 @@ class Dial extends HookConsumerWidget {
     useEffect(() {
       player?.setVolume(detentVolume).then((_) => playDetent());
       return;
-    }, [selectedSeconds.value]);
+    }, [selectedSeconds.value, selectedMinutes.value, selectedHours.value]);
 
     final detentPlayTimer = useRef<Timer?>(null);
     void fn() async {
@@ -84,7 +84,8 @@ class Dial extends HookConsumerWidget {
         return;
       }
 
-      fn();
+      // TODO: Find a better way to reduce play latency
+      // fn();
       return;
     }, [timeSelection.value, player]);
 
