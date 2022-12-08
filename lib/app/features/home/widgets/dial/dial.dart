@@ -62,11 +62,6 @@ class Dial extends HookConsumerWidget {
       await player.resume();
     }
 
-    useEffect(() {
-      player?.setVolume(detentVolume).then((_) => playDetent());
-      return;
-    }, [selectedSeconds.value, selectedMinutes.value, selectedHours.value]);
-
     final detentPlayTimer = useRef<Timer?>(null);
     void fn() async {
       detentPlayTimer.value?.cancel();
@@ -122,6 +117,13 @@ class Dial extends HookConsumerWidget {
         if (remainingSeconds <= 0) stopTimer(playSound: true);
       });
     }
+
+    useEffect(() {
+      //? Maybe avoid this check to play the detent when the countdown continues
+      if (isTimerRunning) return;
+      player?.setVolume(detentVolume).then((_) => playDetent());
+      return;
+    }, [selectedSeconds.value, selectedMinutes.value, selectedHours.value]);
 
     final gotoTimeViewAfterSelection = useRef(false);
     void gotoNext() {
@@ -315,34 +317,40 @@ class Dial extends HookConsumerWidget {
                                   child: Row(
                                     children: [
                                       GestureDetector(
-                                        onLongPress: () {
-                                          gotoTimeViewAfterSelection.value =
-                                              true;
-                                          timeSelection.value =
-                                              TimeSelection.hours;
-                                        },
+                                        onLongPress: isTimerRunning
+                                            ? null
+                                            : () {
+                                                gotoTimeViewAfterSelection
+                                                    .value = true;
+                                                timeSelection.value =
+                                                    TimeSelection.hours;
+                                              },
                                         child: Text(
                                             _parseTime(selectedHours.value)),
                                       ),
                                       const Text(':'),
                                       GestureDetector(
-                                        onLongPress: () {
-                                          gotoTimeViewAfterSelection.value =
-                                              true;
-                                          timeSelection.value =
-                                              TimeSelection.minutes;
-                                        },
+                                        onLongPress: isTimerRunning
+                                            ? null
+                                            : () {
+                                                gotoTimeViewAfterSelection
+                                                    .value = true;
+                                                timeSelection.value =
+                                                    TimeSelection.minutes;
+                                              },
                                         child: Text(
                                             _parseTime(selectedMinutes.value)),
                                       ),
                                       const Text(':'),
                                       GestureDetector(
-                                        onLongPress: () {
-                                          gotoTimeViewAfterSelection.value =
-                                              true;
-                                          timeSelection.value =
-                                              TimeSelection.seconds;
-                                        },
+                                        onLongPress: isTimerRunning
+                                            ? null
+                                            : () {
+                                                gotoTimeViewAfterSelection
+                                                    .value = true;
+                                                timeSelection.value =
+                                                    TimeSelection.seconds;
+                                              },
                                         child: Text(
                                             _parseTime(selectedSeconds.value)),
                                       ),
