@@ -99,9 +99,19 @@ class Dial extends HookConsumerWidget {
       if (playSound) onPlay();
     }
 
+    final playPauseAnimationController = useAnimationController(
+      duration: const Duration(milliseconds: 200),
+    );
+    final isTimerPaused = useRef(false);
     void startCountdown() {
-      timer.value?.cancel();
+      if (!isTimerPaused.value && isTimerRunning) return;
+
       debugPrint('Start clock');
+      timer.value?.cancel();
+
+      isTimerPaused.value = false;
+      playPauseAnimationController.reverse();
+
       countdownSeconds.value = (selectedHours.value * 60 * 60) +
           (selectedMinutes.value * 60) +
           selectedSeconds.value;
@@ -120,7 +130,7 @@ class Dial extends HookConsumerWidget {
 
     useEffect(() {
       //? Maybe avoid this check to play the detent when the countdown continues
-      if (isTimerRunning) return;
+      if (!isTimerPaused.value && isTimerRunning) return;
       player?.setVolume(detentVolume).then((_) => playDetent());
       return;
     }, [selectedSeconds.value, selectedMinutes.value, selectedHours.value]);
@@ -180,6 +190,24 @@ class Dial extends HookConsumerWidget {
 
       return;
     }, [timeSelection.value]);
+
+    void resumeTimer() {
+      startCountdown();
+    }
+
+    void pauseTimer() {
+      playPauseAnimationController.forward();
+      timer.value?.cancel();
+      isTimerPaused.value = true;
+    }
+
+    void toggleTimerState() {
+      if (isTimerPaused.value) {
+        resumeTimer();
+      } else {
+        pauseTimer();
+      }
+    }
 
     useEffect(() {
       return () {
@@ -317,40 +345,43 @@ class Dial extends HookConsumerWidget {
                                   child: Row(
                                     children: [
                                       GestureDetector(
-                                        onLongPress: isTimerRunning
-                                            ? null
-                                            : () {
+                                        onLongPress: !isTimerRunning ||
+                                                isTimerPaused.value
+                                            ? () {
                                                 gotoTimeViewAfterSelection
                                                     .value = true;
                                                 timeSelection.value =
                                                     TimeSelection.hours;
-                                              },
+                                              }
+                                            : null,
                                         child: Text(
                                             _parseTime(selectedHours.value)),
                                       ),
                                       const Text(':'),
                                       GestureDetector(
-                                        onLongPress: isTimerRunning
-                                            ? null
-                                            : () {
+                                        onLongPress: !isTimerRunning ||
+                                                isTimerPaused.value
+                                            ? () {
                                                 gotoTimeViewAfterSelection
                                                     .value = true;
                                                 timeSelection.value =
                                                     TimeSelection.minutes;
-                                              },
+                                              }
+                                            : null,
                                         child: Text(
                                             _parseTime(selectedMinutes.value)),
                                       ),
                                       const Text(':'),
                                       GestureDetector(
-                                        onLongPress: isTimerRunning
-                                            ? null
-                                            : () {
+                                        onLongPress: !isTimerRunning ||
+                                                isTimerPaused.value
+                                            ? () {
                                                 gotoTimeViewAfterSelection
                                                     .value = true;
                                                 timeSelection.value =
                                                     TimeSelection.seconds;
-                                              },
+                                              }
+                                            : null,
                                         child: Text(
                                             _parseTime(selectedSeconds.value)),
                                       ),
@@ -374,10 +405,27 @@ class Dial extends HookConsumerWidget {
                                 )
                               ],
                               if (isTimerRunning)
-                                TextButton.icon(
-                                    onPressed: stopTimer,
-                                    icon: const Icon(Icons.stop_rounded),
-                                    label: Text(context.l10n.stopTimer))
+                                IconTheme(
+                                  data: theme.iconTheme.copyWith(
+                                    size: 28,
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      IconButton(
+                                        onPressed: toggleTimerState,
+                                        icon: AnimatedIcon(
+                                          icon: AnimatedIcons.pause_play,
+                                          progress:
+                                              playPauseAnimationController,
+                                        ),
+                                      ),
+                                      IconButton(
+                                          onPressed: stopTimer,
+                                          icon: const Icon(Icons.stop_rounded))
+                                    ],
+                                  ),
+                                ),
                             ],
                           )),
               ),
