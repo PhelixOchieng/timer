@@ -228,7 +228,6 @@ class Dial extends HookConsumerWidget {
     return GestureDetector(
       onTapDown: (_) => pressedAnimationController.reverse(),
       onTapUp: (_) => pressedAnimationController.forward(),
-      onTapCancel: pressedAnimationController.forward,
       onTap: gotoNext,
       // TODO: Only run the detent loop when the user is not panning
       onPanDown: (_) {},
@@ -271,6 +270,20 @@ class Dial extends HookConsumerWidget {
 
         dialRotationAngle.value = angle;
       },
+      onLongPress: () {
+        pressedAnimationController.forward();
+        if (!isSelecting) return;
+
+        showCustomModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            builder: (_) => InputSheet(
+                  timeSelection: timeSelection,
+                  selectedSeconds: selectedSeconds,
+                  selectedMinutes: selectedMinutes,
+                  selectedHours: selectedHours,
+                ));
+      },
       child: Transform.scale(
         scale: pressedAnimation,
         child: Stack(
@@ -295,28 +308,15 @@ class Dial extends HookConsumerWidget {
                               isSelectingSeconds
                                   ? const SizedBox(height: 8)
                                   : const SizedBox(height: 20),
-                              GestureDetector(
-                                onLongPress: () {
-                                  showCustomModalBottomSheet(
-                                      context: context,
-                                      builder: (_) => InputSheet(
-                                            timeSelection: timeSelection,
-                                            selectedSeconds: selectedSeconds,
-                                            selectedMinutes: selectedMinutes,
-                                            selectedHours: selectedHours,
-                                          ));
-                                },
-                                child: DefaultTextStyle(
-                                    style: textTheme.headline1!.copyWith(),
-                                    child: isSelectingSeconds
-                                        ? Text(
-                                            _parseTime(selectedSeconds.value))
-                                        : isSelectingMinutes
-                                            ? Text(_parseTime(
-                                                selectedMinutes.value))
-                                            : Text(_parseTime(
-                                                selectedHours.value))),
-                              ),
+                              DefaultTextStyle(
+                                  style: textTheme.headline1!.copyWith(),
+                                  child: isSelectingSeconds
+                                      ? Text(_parseTime(selectedSeconds.value))
+                                      : isSelectingMinutes
+                                          ? Text(
+                                              _parseTime(selectedMinutes.value))
+                                          : Text(
+                                              _parseTime(selectedHours.value))),
                               // const SizedBox(height: 12),
                               Text(isSelectingSeconds
                                   ? context.l10n.selectSeconds

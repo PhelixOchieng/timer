@@ -1,4 +1,5 @@
 {
+  "numberRangeInvalid": "رقم صالح بين {lowerBound} و {upperBound}",
   "save": "يحفظ",
   "language": "يحفظ",
   "theme": "يحفظ",

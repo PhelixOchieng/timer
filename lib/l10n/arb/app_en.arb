@@ -1,6 +1,20 @@
 {
+  "fieldRequired": "This field is required",
+  "notNumber": "Only digits are allowed",
+  "numberRangeInvalid": "Valid number is between {lowerBound} and {upperBound}",
+  "@numberRangeInvalid": {
+    "placeholders": {
+      "lowerBound": {
+        "type": "int"
+      },
+      "upperBound": {
+        "type": "int"
+      }
+    }
+  },
   "tapToStart": "Tap To Start",
   "reset": "Reset",
+  "stop": "Stop",
   "stopTimer": "Stop Timer",
   "pressToContinue": "Press To Continue",
   "selectSeconds": "Select Seconds",

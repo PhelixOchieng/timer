@@ -40,18 +40,20 @@ class InputSheet extends HookWidget {
 
       Navigator.of(context).pop();
 
-      await Future.delayed(const Duration(milliseconds: 800));
       final number = int.parse(numController.text);
+      TimeSelection? selection;
       if (isSelectingSeconds) {
         selectedSeconds.value = number;
-        timeSelection.value = TimeSelection.minutes;
+        selection = TimeSelection.minutes;
       } else if (isSelectingMinutes) {
         selectedMinutes.value = number;
-        timeSelection.value = TimeSelection.hours;
+        selection = TimeSelection.hours;
       } else {
         selectedHours.value = number;
-        timeSelection.value = null;
       }
+
+      await Future.delayed(const Duration(milliseconds: 500));
+      timeSelection.value = selection;
     }
 
     return Form(
@@ -77,19 +79,19 @@ class InputSheet extends HookWidget {
             onFieldSubmitted: (_) => setValue(),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Number is required';
+                return context.l10n.fieldRequired;
               }
 
               if (!RegExp(r'^\d+$').hasMatch(value)) {
-                return 'Only digits are allowed';
+                return context.l10n.notNumber;
               }
 
               final number = int.parse(value);
               if (isSelectingHours && (number < 0 || number > 23)) {
-                return 'Valid number is between 0 and 23';
+                return context.l10n.numberRangeInvalid(0, 24);
               }
               if (number < 0 || number > 59) {
-                return 'Valid number is between 0 and 59';
+                return context.l10n.numberRangeInvalid(0, 60);
               }
 
               return null;
@@ -100,9 +102,11 @@ class InputSheet extends HookWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextButton(
-                  onPressed: Navigator.of(context).pop, child: Text('Cancel')),
+                  onPressed: Navigator.of(context).pop,
+                  child: Text(context.l10n.cancel)),
               const SizedBox(width: 8),
-              ElevatedButton(onPressed: setValue, child: Text('Set')),
+              ElevatedButton(
+                  onPressed: setValue, child: Text(context.l10n.save)),
             ],
           ),
           const SizedBox(height: 16),

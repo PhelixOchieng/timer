@@ -1,4 +1,5 @@
 {
+  "numberRangeInvalid": "Nambari halali ni kati ya {lowerBound} na {upperBound}",
   "tapToStart": "Bonyeza Ili Kuendelea",
   "reset": "Weka upya",
   "stopTimer": "Zima",

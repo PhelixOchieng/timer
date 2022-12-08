@@ -6,7 +6,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
 import 'package:timer/app/core/players/audio_player.dart';
+import 'package:timer/l10n/l10n.dart';
 import 'package:timer/app/features/views.dart';
 
 import '../widgets/widgets.dart';
@@ -80,7 +82,7 @@ class HomeView extends HookConsumerWidget {
                       size: 36,
                       color: theme.colorScheme.secondary,
                     ),
-                    label: Text('Stop')),
+                    label: Text(context.l10n.stop)),
               ],
             ),
             const SizedBox(height: 20),

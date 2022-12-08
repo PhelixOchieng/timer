@@ -1,7 +1,10 @@
 {
   "ar": [
+    "fieldRequired",
+    "notNumber",
     "tapToStart",
     "reset",
+    "stop",
     "stopTimer",
     "pressToContinue",
     "selectSeconds",
@@ -11,8 +14,12 @@
   ],
 
   "es": [
+    "fieldRequired",
+    "notNumber",
+    "numberRangeInvalid",
     "tapToStart",
     "reset",
+    "stop",
     "stopTimer",
     "pressToContinue",
     "selectSeconds",
@@ -22,8 +29,12 @@
   ],
 
   "fr": [
+    "fieldRequired",
+    "notNumber",
+    "numberRangeInvalid",
     "tapToStart",
     "reset",
+    "stop",
     "stopTimer",
     "pressToContinue",
     "selectSeconds",
@@ -33,8 +44,12 @@
   ],
 
   "pt": [
+    "fieldRequired",
+    "notNumber",
+    "numberRangeInvalid",
     "tapToStart",
     "reset",
+    "stop",
     "stopTimer",
     "pressToContinue",
     "selectSeconds",
@@ -44,13 +59,23 @@
   ],
 
   "ru": [
+    "fieldRequired",
+    "notNumber",
+    "numberRangeInvalid",
     "tapToStart",
     "reset",
+    "stop",
     "stopTimer",
     "pressToContinue",
     "selectSeconds",
     "selectMinutes",
     "selectHours",
     "cancel"
+  ],
+
+  "sw": [
+    "fieldRequired",
+    "notNumber",
+    "stop"
   ]
 }
