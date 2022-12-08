@@ -74,6 +74,24 @@ class Dial extends HookConsumerWidget {
       });
     }
 
+    void gotoNext() {
+      if (isSelectingSeconds) {
+        timeSelection.value = TimeSelection.minutes;
+      } else if (isSelectingMinutes) {
+        timeSelection.value = TimeSelection.hours;
+      } else if (isSelectingHours) {
+        if (selectedSeconds.value == 0 &&
+            selectedMinutes.value == 0 &&
+            selectedHours.value == 0) {
+          timeSelection.value = TimeSelection.seconds;
+        } else {
+          timeSelection.value = null;
+        }
+      } else {
+        startCountdown();
+      }
+    }
+
     void goBack() {
       if (isSelectingMinutes) {
         timeSelection.value = TimeSelection.seconds;
@@ -115,17 +133,7 @@ class Dial extends HookConsumerWidget {
       onTapDown: (_) => pressedAnimationController.reverse(),
       onTapUp: (_) => pressedAnimationController.forward(),
       onTapCancel: pressedAnimationController.forward,
-      onTap: () {
-        if (isSelectingSeconds) {
-          timeSelection.value = TimeSelection.minutes;
-        } else if (isSelectingMinutes) {
-          timeSelection.value = TimeSelection.hours;
-        } else if (isSelectingHours) {
-          timeSelection.value = null;
-        } else {
-          startCountdown();
-        }
-      },
+      onTap: gotoNext,
       onPanUpdate: (details) {
         final pos = details.localPosition;
 
@@ -199,7 +207,7 @@ class Dial extends HookConsumerWidget {
                                   ? const SizedBox(height: 8)
                                   : const SizedBox(height: 20),
                               GestureDetector(
-                                onTap: () {
+                                onLongPress: () {
                                   showCustomModalBottomSheet(
                                       context: context,
                                       builder: (_) => InputSheet(
