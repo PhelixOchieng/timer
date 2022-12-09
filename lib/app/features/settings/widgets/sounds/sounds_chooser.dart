@@ -6,8 +6,10 @@ import 'package:timer/app/common/utils/extensions.dart';
 import 'package:timer/l10n/l10n.dart';
 
 import '../../repository/sounds_repository.dart';
+import '../../repository/vibrations_repository.dart';
+import '../../views/sounds_list_view.dart';
+import '../../views/vibrations_view.dart';
 import 'enums.dart';
-import 'sounds_list.dart';
 
 class SoundsChooser extends HookConsumerWidget {
   const SoundsChooser({super.key});
@@ -18,11 +20,14 @@ class SoundsChooser extends HookConsumerWidget {
     final selectedAlarmSound = soundsState.alarmSound;
     final selectedDetentsSound = soundsState.detentsSound;
 
+    final vibrationsState = ref.watch(vibrationsProvider);
+    final selectedVibration = vibrationsState.alarmVibration;
+
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
 
     void gotoChoices(SoundSelection selection) {
-      context.swipeTo(SoundsList(selection: selection));
+      context.swipeTo(SoundsListView(selection: selection));
     }
 
     return Column(
@@ -37,7 +42,7 @@ class SoundsChooser extends HookConsumerWidget {
           title: Text(context.l10n.alarm),
           subtitle:
               Text(selectedAlarmSound.name, overflow: TextOverflow.ellipsis),
-          trailing: const Icon(Icons.arrow_forward_ios_rounded),
+          trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 20),
         ),
         const Divider(height: 0),
         ListTile(
@@ -45,7 +50,18 @@ class SoundsChooser extends HookConsumerWidget {
           title: Text(context.l10n.detents),
           subtitle:
               Text(selectedDetentsSound.name, overflow: TextOverflow.ellipsis),
-          trailing: const Icon(Icons.arrow_forward_ios_rounded),
+          trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 20),
+        ),
+        const Divider(height: 0),
+        ListTile(
+          onTap: () => context.swipeTo(const VibrationsView()),
+          title: Text(context.l10n.vibrations),
+          subtitle: Text(
+              vibrationsState.areVibrationsEnabled
+                  ? selectedVibration.name
+                  : context.l10n.disabled,
+              overflow: TextOverflow.ellipsis),
+          trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 20),
         ),
       ],
     );

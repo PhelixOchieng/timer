@@ -48,7 +48,7 @@ class Dial extends HookConsumerWidget {
       dialRotationAngle.value = angle;
     }
 
-    const detentVolume = 0.5;
+    const detentVolume = 0.25;
     final playerFuture = useFuture(playerState.createPlayer(
       'detent',
       source: AssetSource('click_1.mp3'),

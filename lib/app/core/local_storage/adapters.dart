@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:timer/app/core/language/language.model.dart';
-import 'package:timer/app/features/settings/models/sounds_model.dart';
+import 'package:timer/app/features/settings/models/sound_model.dart';
+import 'package:timer/app/features/settings/models/vibration_model.dart';
 
 class ThemeModeAdapter extends TypeAdapter<ThemeMode> {
   @override
@@ -47,6 +48,22 @@ class SoundModelAdapter extends TypeAdapter<SoundModel> {
 
   @override
   void write(BinaryWriter writer, SoundModel obj) {
+    writer.write(obj.toJson());
+  }
+}
+
+class VibrationModelAdapter extends TypeAdapter<VibrationModel> {
+  @override
+  final typeId = 3;
+
+  @override
+  VibrationModel read(BinaryReader reader) {
+    final readValue = Map<String, dynamic>.from(reader.read());
+    return VibrationModel.fromJson(readValue);
+  }
+
+  @override
+  void write(BinaryWriter writer, VibrationModel obj) {
     writer.write(obj.toJson());
   }
 }

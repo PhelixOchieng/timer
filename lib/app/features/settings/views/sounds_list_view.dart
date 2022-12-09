@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:timer/app/core/players/audio_player.dart';
-import 'package:timer/app/features/settings/models/sounds_model.dart';
+import 'package:timer/app/features/settings/models/sound_model.dart';
 import 'package:timer/app/features/settings/repository/sounds_repository.dart';
 
-import 'enums.dart';
+import '../widgets/sounds/enums.dart';
 
-class SoundsList extends HookConsumerWidget {
-  const SoundsList({super.key, required this.selection});
+class SoundsListView extends HookConsumerWidget {
+  const SoundsListView({super.key, required this.selection});
 
   final SoundSelection selection;
 

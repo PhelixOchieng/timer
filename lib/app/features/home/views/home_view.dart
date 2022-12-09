@@ -6,9 +6,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:timer/app/features/settings/repository/vibrations_repository.dart';
+import 'package:vibration/vibration.dart';
 
 import 'package:timer/app/core/players/audio_player.dart';
-import 'package:timer/app/features/settings/models/sounds_model.dart';
+import 'package:timer/app/features/settings/models/sound_model.dart';
 import 'package:timer/app/features/settings/repository/sounds_repository.dart';
 import 'package:timer/l10n/l10n.dart';
 import 'package:timer/app/features/views.dart';
@@ -25,6 +27,7 @@ class HomeView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final playersState = ref.watch(audioPlayerProvider);
     final soundsState = ref.watch(soundsProvider);
+    final vibrationsState = ref.watch(vibrationsProvider);
 
     final playerS = useState<AudioPlayer?>(null);
     final player = playerS.value;
@@ -48,10 +51,14 @@ class HomeView extends HookConsumerWidget {
       return;
     }, []);
 
-    useEffect(() {
-      debugPrint('Alarm change: $player');
+    void setPlayerSource() {
       final source = _getSource(soundsState.alarmSound);
       player?.setSource(source);
+    }
+
+    useEffect(() {
+      debugPrint('Alarm change: $player');
+      setPlayerSource();
 
       return;
     }, [soundsState.alarmSound]);
@@ -62,20 +69,30 @@ class HomeView extends HookConsumerWidget {
     void playAudio() async {
       debugPrint('Play: $player');
       vibrationTimer.value?.cancel();
+      setPlayerSource();
+
       await player?.stop();
       await player?.resume();
       debugPrint('PS: ${player?.state}');
       isPlayingAudio.value = true;
 
-      // vibrationTimer.value =
-      //     Timer.periodic(const Duration(seconds: 4), (timer) {
-      //   HapticFeedback.lightImpact();
-      // });
+      if (!vibrationsState.areVibrationsEnabled) return;
+
+      final vibration = vibrationsState.alarmVibration;
+      vibration.vibrate();
+      vibrationTimer.value = Timer.periodic(
+        const Duration(seconds: 2),
+        (_) {
+          vibration.vibrate();
+          // Vibration.vibrate(pattern: [0, 100, 150, 100, 75, 100, 470]);
+        },
+      );
     }
 
     void stopAudio() async {
       await player?.stop();
       vibrationTimer.value?.cancel();
+      Vibration.cancel();
 
       isPlayingAudio.value = false;
     }
@@ -101,7 +118,9 @@ class HomeView extends HookConsumerWidget {
           //       // await HapticFeedback.lightImpact();
           //       // await HapticFeedback.mediumImpact();
           //       // await HapticFeedback.selectionClick();
-          //       await HapticFeedback.vibrate();
+          //       // await HapticFeedback.vibrate();
+          //       // debugPrint('${await Vibration.hasVibrator()}');
+          //       playAudio();
           //     },
           //     child: Text('Buzz')),
           if (isPlayingAudio.value) ...[

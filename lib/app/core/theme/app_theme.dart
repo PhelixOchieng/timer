@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:timer/app/common/constants/constants.dart';
+import 'package:timer/app/common/utils/extensions.dart';
 import 'package:timer/app/core/local_storage/app_storage.dart';
 
 class AppTheme extends ChangeNotifier {
@@ -27,17 +28,39 @@ class AppTheme extends ChangeNotifier {
     notifyListeners();
   }
 
+  final colorScheme = ColorScheme.fromSeed(
+    seedColor: kPrimaryColor,
+    primary: kPrimaryColor,
+    onPrimary: Colors.white,
+    secondary: kSecondaryColor,
+  );
+  Color _getStateColor({
+    required Set<MaterialState> states,
+    required Color inactiveColor,
+    required Color disabledColor,
+    Color? activeColor,
+  }) {
+    const Set<MaterialState> interactiveStates = <MaterialState>{
+      MaterialState.pressed,
+      MaterialState.hovered,
+      MaterialState.focused,
+      MaterialState.selected,
+    };
+
+    if (states.isEmpty) return inactiveColor;
+    if (states.contains(MaterialState.disabled)) {
+      return disabledColor;
+    }
+
+    return activeColor ?? colorScheme.primary;
+  }
+
   ThemeData _commonTheme(ThemeData base) {
     final theme = base.copyWith(
       useMaterial3: true,
       primaryColor: kPrimaryColor,
       brightness: base.brightness,
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: kPrimaryColor,
-        primary: kPrimaryColor,
-        onPrimary: Colors.white,
-        secondary: kSecondaryColor,
-      ),
+      colorScheme: colorScheme,
       textTheme: base.textTheme.copyWith(
         bodyMedium: base.textTheme.bodyMedium?.copyWith(
           fontSize: 16,
@@ -92,6 +115,25 @@ class AppTheme extends ChangeNotifier {
         border: base.inputDecorationTheme.border?.copyWith(
           borderSide: const BorderSide(color: Colors.black12),
         ),
+      ),
+      switchTheme: base.switchTheme.copyWith(
+        thumbColor: MaterialStateProperty.resolveWith((states) =>
+            _getStateColor(
+                states: states,
+                inactiveColor: Colors.white,
+                disabledColor: Colors.black26)),
+        trackColor: MaterialStateProperty.resolveWith((states) =>
+            _getStateColor(
+                states: states,
+                activeColor: colorScheme.primaryContainer,
+                inactiveColor: colorScheme.primaryContainer,
+                disabledColor: Colors.black12)),
+      ),
+      radioTheme: base.radioTheme.copyWith(
+        fillColor: MaterialStateColor.resolveWith((states) => _getStateColor(
+            states: states,
+            inactiveColor: Colors.black38,
+            disabledColor: Colors.black12)),
       ),
     );
   }

@@ -1,5 +1,9 @@
 {
   "ar": [
+    "chooseVibration",
+    "disabled",
+    "enableVibrations",
+    "vibrations",
     "alarm",
     "detents",
     "sounds",
@@ -7,6 +11,10 @@
   ],
 
   "es": [
+    "chooseVibration",
+    "disabled",
+    "enableVibrations",
+    "vibrations",
     "alarm",
     "detents",
     "sounds",
@@ -14,6 +22,10 @@
   ],
 
   "fr": [
+    "chooseVibration",
+    "disabled",
+    "enableVibrations",
+    "vibrations",
     "alarm",
     "detents",
     "sounds",
@@ -21,6 +33,10 @@
   ],
 
   "pt": [
+    "chooseVibration",
+    "disabled",
+    "enableVibrations",
+    "vibrations",
     "alarm",
     "detents",
     "sounds",
@@ -28,12 +44,20 @@
   ],
 
   "ru": [
+    "chooseVibration",
+    "disabled",
+    "enableVibrations",
+    "vibrations",
     "alarm",
     "detents",
     "sounds"
   ],
 
   "sw": [
+    "chooseVibration",
+    "disabled",
+    "enableVibrations",
+    "vibrations",
     "alarm",
     "detents",
     "sounds",

@@ -1,4 +1,8 @@
 {
+  "chooseVibration": "Choose vibration pattern",
+  "disabled": "Disabled",
+  "enableVibrations": "Enable Vibrations",
+  "vibrations": "Vibrations",
   "alarm": "Alarm",
   "detents": "Detents",
   "sounds": "Sounds",

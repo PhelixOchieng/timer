@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:timer/app/core/local_storage/app_storage.dart';
 
-import '../models/sounds_model.dart';
+import '../models/sound_model.dart';
 
 class SoundsRepository extends ChangeNotifier {
   final Ref _ref;
